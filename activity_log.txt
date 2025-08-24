@@ -165,4 +165,13 @@
  ...rrr_____r_rr______ii.........rrrrrrr___rr__rr__r____r____r_________r_________
  r______rrrggg...ggg.........g.g.........g.........iii.rrr_rrr_r_________r_______
  __rrr________r_r_________ri.......ii..ii.........iii.iiiiiiiii...i......rr__rrri
+ ..ririiiii...i.........i.ii....ii.i.........rr_________irii....r__r_________rr__
+ _______rrrr_________rii.ii.ii..iii..i........rrr_r_r_________rr_rrr_rr__rrr_____
+ _rggggr_gggggggr____rr__rri.........i.........ii...ii.........r_r_________r_r__r
+ rr____rr_rr_____rr___rrr_rr__rr____r_____r_rr____r___r___rr__gggcmmmmm...mmggggg
+ girgggggggi.r_gg...iir______ii......i.........rii....gg.......gg.........g....ii
+ .........
+2025-08-24 17:35:14 /Users/jayvee/Library/Application Support/pico-8/carts/untitled.p8
+ iiiii
+2025-08-24 17:35:29 /Users/jayvee/Library/Application Support/pico-8/carts/brackeys.p8
  
