@@ -18,7 +18,7 @@ The manual for [PICO-8 is available here](https://www.lexaloffle.com/dl/docs/pic
 A list of current projects is below:
   1. [snek.p8](carts/snek.p8)
       - A small [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)) clone to learn the basics of PICO-8
-  2. [carts/test_music_cart.p8](test_music_cart.p8) 
-      - A music playground & sound effects testbed not joined to a single project.
-  3. [brackeys.p8](carts/brackeys.p8) 
+  2. [brackeys.p8](carts/brackeys.p8) 
       - Justin's run at a PICO-8 project for the [Brackeys 2025.2 Game Jam](https://itch.io/jam/brackeys-14)
+  3. [test_music_cart.p8](carts/test_music_cart.p8) 
+      - A music playground & sound effects testbed not joined to a single project.
