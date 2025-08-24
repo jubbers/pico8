@@ -174,4 +174,6 @@
 2025-08-24 17:35:14 /Users/jayvee/Library/Application Support/pico-8/carts/untitled.p8
  iiiii
 2025-08-24 17:35:29 /Users/jayvee/Library/Application Support/pico-8/carts/brackeys.p8
+ ir_rr_________ri.........ii..rr_____rr____rr_____r___r_________iirr__r_rr_______
+ __r__r_rggggggrggrggggggggggggggr__gggrgggggrr_________ggggggggggggggggggggggggg
  
