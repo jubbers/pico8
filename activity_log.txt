@@ -176,4 +176,13 @@
 2025-08-24 17:35:29 /Users/jayvee/Library/Application Support/pico-8/carts/brackeys.p8
  ir_rr_________ri.........ii..rr_____rr____rr_____r___r_________iirr__r_rr_______
  __r__r_rggggggrggrggggggggggggggr__gggrgggggrr_________ggggggggggggggggggggggggg
+ g..ggggggggg.......g..gg.gggggggggggggggggggggggggggggggggggmmm..mmm.mm.....mm.m
+ r_________r___r_________mmm.........mm.........immi.i........i......i.ii.ii..ii.
+ .....i.........ii.....irr_________rr__rir____rrr_____rrrr___iiiii..irri.im...mi.
+ ........r__i.....iiiii....mmgggggg.........i.........ii.....iggggggggggggg.ggggg
+ gggggggggg.........gg.........gggggg.gggggggggggggg.gggggggggggggggggggggggggggg
+ ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg.....
+ ....gggggggg.gggggggggggggggggggggggggggggggggggggggggggggggggggggggg.........gg
+ ggggggg........ggggggggggggggggggggggggggggggggggggggggggggggg..ggg.......g..ggg
+ gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
  
