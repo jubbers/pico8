@@ -133,4 +133,36 @@
 2025-08-24 12:19:21 /Users/jayvee/Library/Application Support/pico-8/carts/untitled_1.p8
  iccii.i
 2025-08-24 12:19:42 /Users/jayvee/Library/Application Support/pico-8/carts/brackeys.p8
+ i...i.........i.........iccccccccccccccccccccccc.ccc.cc.........c...c.........c.
+ ........c.....c......c........cgggggggcccrmggg..gggg.........gg..ggggggggggggggg
+ gggggggggggggggggggggggggggggggggccmmm.mmmmmmmmmmmggggggggggggggggggggggmmmmmmmm
+ ggggggggggggmmmmmmmmmmcircmmgggggggggggggggggggggggggggggggggggggggggggggggggggg
+ gggggggr______immmmmmmmmmmmmmmmmrmmmmmmmmmmmmmmmimmmmmmmmmmmmmmmmmmimmmmmmmmir_r
+ rr_____rrrrrrr__mccr_cmmmmggggggggmmmmmmmmmmmmmmgggggggggggggggggggggggggggggggg
+ ggggmmmmmmmmmmmmmmmmmmmmmmmmmmmmrmmmrmmmmrmmmmmmmmrr____r______r_________ii.....
+ ....ii.........rr_________rr__r___r_r_____r__rr___rr__rr__rr_immmmmmmmmmmmmmgggg
+ ggggr_rr_rrrr_rr_________rrr___rrggggggggggggggggggggggggggg.ggggggccccccccccccc
+ cccccccccccccccmmmmmmmmccccccccgggggggggggggggccccccc.c..ccc........cr_rrrr_____
+ ____rrr_r______rrr___rrr_________rrrr_rr_________rr_r___rr__r_________rrri......
+ ...i.ii.........i.........ii...iii......i....i.........rr_________rr_rrrrrgsgmgi
+ i.rrggggirrrrrrr_rrr_r_rr____r__rr______rrr__rrrr__rrrr___rr__rrrr__rrr___r__rgg
+ ggggggggrrr_rrr_rrrrr_rr__ggr_______iggggggggrr_riiggrrrr_rrr_____rr_rrr_rmggggg
+ ggggggggggggggggggggggggggggggggggggggggggggggggggggggg..ggggggggggggggggggggggg
+ gggggmmggg..ggmmrr____rrrrrr_mmmmmmgggggg.ggggggmmm.m..mgggggggggggggggggggg.gg.
+ gg.g.g.g...g...grrr_rrr___rrr_r__r_rrr_rr_r__rr____r_r_rr__igggggggmmr__r_______
+ __rr_________rrrr___r_______r__rrrr____rrr___r_rrr_rrr_rr_________rrr_________r_
+ __rr_________rrrrimgggggggggggggggi....ir__i.rr_rrr_________rr_rr_r____rgg......
+ gii.....rr_rr_rr_________igggggrigggggrgggggggriggggggggggggggggr_rr_____r___r__
+ _______r____iggg..gr___rr____r__gggggi.....igggrgggggggggggggggggrgggggggggggggg
+ gggggggggggggggggrrr_ggggggggrggrr_g..rrr_r_r_r___r____riir_rr_____rrgggr_r__r__
+ rr_______rrrrrig.rggrrii..i......rrr________rr__r__r_rr_rrr_________r__r________
+ _r_________r_________rr_________ii.i.......i.........ii........rr_rrr__rrr_r____
+ _____rrrrrr_r___r_________rr_r___rrr__r_r_rrrr____rrr_r___r____rrrr__r__r____rrr
+ _rrr_________r____r_________gggiggggggggggggggggggg....g.........gg..g.........g
+ iigg.........ggr____rrr_rrr_r_r_________rr___rrrr___r____rr_rrr_________rr______
+ ___rr_________iggg.........r_r_r_______r_rrrr_________rr___rrrr_rrrr_rrr_r______
+ ___ggirrrr_________r_rr_________rrrrrr_________rr__rr__g...rrrrr_________ri.....
+ ...rrr_____r_rr______ii.........rrrrrrr___rr__rr__r____r____r_________r_________
+ r______rrrggg...ggg.........g.g.........g.........iii.rrr_rrr_r_________r_______
+ __rrr________r_r_________ri.......ii..ii.........iii.iiiiiiiii...i......rr__rrri
  
