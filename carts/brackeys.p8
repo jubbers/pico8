@@ -3,6 +3,7 @@ version 43
 __lua__
 function _init()
   spr_size=8
+  screen_size=128
   fancyfill_ct=1
   fancyfill={
     0b1010010101011010,
@@ -12,8 +13,10 @@ function _init()
   }
 
   -- helper to make color names readable
-  colors={black=0,blue_d=1,purp_d=2,green_d=3,brown=4,grey_d=5,grey_l=6,white=7,red=8,orange=9,yellow=10,green=11,blue=12,lavender=13,pink=14,peach=15}
+  colors={black=0,blue_d=1,purp_d=2,green_d=3,brown=4,grey_d=5,grey_l=6,white=7,red=8,orange=9,yellow=10,green_l=11,blue=12,lavender=13,pink=14,peach=15}
   pi=3.1415
+
+  init_scroller({5,6,7,5,22,23},23)
 
   player={
     health=5,
@@ -64,6 +67,8 @@ function _update()
   -- if frame_ct%20==0 then
   --   player.health = (player.health + 1) % 9
   -- end
+
+  update_scroller()
 end
 
 -->8
@@ -73,9 +78,6 @@ function _draw()
   set_fill("ff")                      -- set fancy upward scrolling fill
   rectfill(0,0,128,128,colors.blue_d) -- draw fill across entire screen
   set_fill()                          -- reset to solid fill
-	 
-  -- sections
-  draw_sidebar()
 
   -- map gamestate
   if gamestate==states.m then
@@ -87,6 +89,9 @@ function _draw()
   elseif gamestate==states.s then
   
   else error("gamestate ".." not accounted for") end
+
+  -- draw the persistent ui on top of everything else
+  draw_sidebar()
 end
 
 -- render the sidebar on the screen
@@ -117,20 +122,65 @@ function draw_gamemap()
   map_width=map_end-map_start
   map_center=map_start+(map_width/2)
 
-  draw_icon_at(22,map_center-16-4,100,false)
+  draw_icon_at(22,map_center-16-4,100,false) -- 16=box width, 4=gap
   draw_icon_at(23,map_center,     100,true)
   draw_icon_at(25,map_center+16+4,100,false)
+  
+  draw_scroller()
 
-  draw_wheel(map_center, 48)
 end
 
--- draw the lucky wheel
-function draw_wheel(x,y)
-  -- circfill(x,y,32,colors.yellow)    -- edge fill yellow
-  -- circ(x,y,32,colors.orange)        -- edge color orange
-  -- circfill(x,y,32-3,colors.blue_d)  -- blue fill
-  -- circ(x,y,32-3,colors.orange)      -- interior edge orange
+-- Initialize the random choice scroller 
+function init_scroller(sprs, y)
+  --[[
+    args: 
+      sprs: table of sprite IDs to render on the scroller
+      y:    y-position to draw the scroller at
+      spd:  initial speed to start the items scrolling at
+      gap:  spacing between each of the in the scroller
+      drag: drag coefficient to slow the scroll by
+  ]]
+  scroll_data = {sprs = sprs,y=y,spd=7,gap=10,drag=0.05,spr_w=8,items={},}
+  local s = scroll_data
+  local step = 8 + s.gap
+  for i=1,#s.sprs do 
+    scroll_data.items[i] = {
+      x=-(i-1)*step,
+      selected=false,
+    }
+  end
+  scroll_data.total_width = (#scroll_data.sprs) * step
+end
 
+-- update positions and slow down; call from _update()
+function update_scroller()
+  local s = scroll_data
+  if not s then return end
+  s.spd = max(0, s.spd - s.drag)
+  for i=1,#s.sprs do
+    s.items[i].x += s.spd
+    -- wrap when fully outside of screen
+    if s.items[i].x > 128 + s.spr_w then
+      s.items[i].x -= s.total_width
+    end
+    -- TODO: set selected
+  end
+end
+
+-- draw sprites at their positions; call from _draw()
+function draw_scroller(id)
+  -- retrieve scroll info
+  local s = scroll_data
+  
+  -- draw container 1px behind the sidebar left + 1px offscreen right
+  rectfill(28,s.y-13,128,s.y+12,colors.blue_d)
+  rect(28,s.y-13,128,s.y+12,colors.lavender)
+  line()
+
+  -- draw items
+  for i=1,#s.sprs do
+    draw_icon_at(s.sprs[i],flr(s.items[i].x),s.y)
+  end
 end
 
 
@@ -141,7 +191,7 @@ function draw_icon_at(s,x,y,se)
       s:  sprite to draw
       x:  x position
       y:  y position
-      se: selected (bool)
+      se: selected (optional bool)
   ]]
 
   if se then 
