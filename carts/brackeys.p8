@@ -148,6 +148,7 @@ function init_scroller(sprs, y)
   -- insert items into table based on a pseudo-random speed + drag coeffecient
   -- choices below are intentionally chosen so the scroll wheel lands approximately
   -- in the center of the item box every time
+  -- TODO: refactory to save a few tokens
   local possible_scrollers={
     {sprs={},y=y,spd=7,gap=10,drag=0.0602,spr_w=8,items={}},
     {sprs={},y=y,spd=9,gap=10,drag=0.070555,spr_w=8,items={}},
