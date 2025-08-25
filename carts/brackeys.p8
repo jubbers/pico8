@@ -11,10 +11,14 @@ function _init()
     0b1010101001010101,
   }
 
+  -- helper to make color names readable
+  colors={black=0,blue_d=1,purp_d=2,green_d=3,brown=4,grey_d=5,grey_l=6,white=7,red=8,orange=9,yellow=10,green=11,blue=12,lavender=13,pink=14,peach=15}
+  pi=3.1415
+
   player={
     health=5,
-    stats={str=50,dex=50,luk=00,csh=00},
-    stats_order={"str","dex","luk","csh"},
+    stats={str=03,dex=03,luk=01,},
+    stats_order={"str","dex","luk"},
     get_hearts=function(self)
       if self.health==0 then return {7,7,7,7} end
       if self.health==1 then return {6,7,7,7} end
@@ -65,10 +69,10 @@ end
 -->8
 function _draw()
   -- bg draw
-  cls(0)                   -- clear screen black
-  set_fill("ff")           -- set fancy upward scrolling fill
-  rectfill(0,0,128,128,1)  -- draw fill across entire screen
-  set_fill()               -- reset to solid fill
+  cls(0)                              -- clear screen black
+  set_fill("ff")                      -- set fancy upward scrolling fill
+  rectfill(0,0,128,128,colors.blue_d) -- draw fill across entire screen
+  set_fill()                          -- reset to solid fill
 	 
   -- sections
   draw_sidebar()
@@ -90,7 +94,7 @@ function draw_sidebar()
   map()
 
   -- health ----------------
-  fancy_container(1,10,25,26,3,1,7)
+  fancy_container(1,10,25,26,3,colors.blue_d,colors.white)
   hearts=player:get_hearts()
   spr(hearts[1], 4,  14)
   spr(hearts[2], 15, 14)
@@ -101,7 +105,7 @@ function draw_sidebar()
   draw_stats()
 
   -- items -----------------
-  fancy_container(1,92,25,26,3,1,7)
+  fancy_container(1,92,25,26,3,colors.blue_d,colors.white)
   spr(8, 4, 96)
   spr(8, 15, 96)
   spr(8, 4, 106)
@@ -113,10 +117,22 @@ function draw_gamemap()
   map_width=map_end-map_start
   map_center=map_start+(map_width/2)
 
-  draw_icon_at(22, map_center - 16 - 4 , 100, false)
-  draw_icon_at(23, map_center, 100, true)
-  draw_icon_at(25, map_center + 16 + 4 , 100, false)
+  draw_icon_at(22,map_center-16-4,100,false)
+  draw_icon_at(23,map_center,     100,true)
+  draw_icon_at(25,map_center+16+4,100,false)
+
+  draw_wheel(map_center, 48)
 end
+
+-- draw the lucky wheel
+function draw_wheel(x,y)
+  -- circfill(x,y,32,colors.yellow)    -- edge fill yellow
+  -- circ(x,y,32,colors.orange)        -- edge color orange
+  -- circfill(x,y,32-3,colors.blue_d)  -- blue fill
+  -- circ(x,y,32-3,colors.orange)      -- interior edge orange
+
+end
+
 
 -- draw a given sprite to the game map
 function draw_icon_at(s,x,y,se)
@@ -129,11 +145,11 @@ function draw_icon_at(s,x,y,se)
   ]]
 
   if se then 
-    fancy_container_c(x,y,16,16,3,13,7,"fr")
+    fancy_container_c(x,y,16,16,3,colors.lavender,colors.white,"fr")
     point_indicator_at(x,y-8,10,30)
-    spr_outline_c(s,x,y,7)
+    spr_outline_c(s,x,y,colors.white)
   else 
-    fancy_container_c(x,y,16,16,3,1,13,"fs")
+    fancy_container_c(x,y,16,16,3,colors.blue_d,colors.lavender,"fs")
     spr_c(s,x,y,8,8)
   end
 end
