@@ -16,7 +16,8 @@ function _init()
   colors={black=0,blue_d=1,purp_d=2,green_d=3,brown=4,grey_d=5,grey_l=6,white=7,red=8,orange=9,yellow=10,green_l=11,blue=12,lavender=13,pink=14,peach=15}
   pi=3.1415
 
-  init_scroller({5,6,7,5,22,23},23)
+  -- init_scroller({5,5,6,7,5,22,23},23)
+  init_scroller({5,7},23)
 
   player={
     health=5,
@@ -122,15 +123,15 @@ function draw_gamemap()
   map_width=map_end-map_start
   map_center=map_start+(map_width/2)
 
-  draw_icon_at(22,map_center-16-4,100,false) -- 16=box width, 4=gap
-  draw_icon_at(23,map_center,     100,true)
-  draw_icon_at(25,map_center+16+4,100,false)
+  draw_icon_at(22,map_center-16-4,100,false,true) -- 16=box width, 4=gap
+  draw_icon_at(23,map_center,     100,true,false)
+  draw_icon_at(25,map_center+16+4,100,false,true)
   
   draw_scroller()
 
 end
 
--- Initialize the random choice scroller 
+-- Initialize the random choice scroller required fields
 function init_scroller(sprs, y)
   --[[
     args: 
@@ -140,8 +141,31 @@ function init_scroller(sprs, y)
       gap:  spacing between each of the in the scroller
       drag: drag coefficient to slow the scroll by
   ]]
-  scroll_data = {sprs = sprs,y=y,spd=7,gap=10,drag=0.05,spr_w=8,items={},}
+
+  -- shuffle order of sprites
+  shuffle_inplace(sprs)
+
+  -- insert items into table based on a pseudo-random speed + drag coeffecient
+  -- choices below are intentionally chosen so the scroll wheel lands approximately
+  -- in the center of the item box every time
+  local possible_scrollers={
+    {sprs={},y=y,spd=7,gap=10,drag=0.0602,spr_w=8,items={}},
+    {sprs={},y=y,spd=9,gap=10,drag=0.070555,spr_w=8,items={}},
+    {sprs={},y=y,spd=8,gap=10,drag=0.0777011,spr_w=8,items={}},
+    {sprs={},y=y,spd=8,gap=10,drag=0.072,spr_w=8,items={}},
+    {sprs={},y=y,spd=6,gap=10,drag=0.0645,spr_w=8,items={}},
+  }
+  scroll_data=possible_scrollers[flr(rnd(#possible_scrollers))+1]
   local s = scroll_data
+
+  -- reinsert the table data (maintaining the shuffled order) until at least 8 items are included
+  while #s.sprs < 8 do 
+    for i=1,#sprs do 
+      add(s.sprs, sprs[i]) 
+    end
+  end
+
+  -- set up item data + table metadata
   local step = 8 + s.gap
   for i=1,#s.sprs do 
     scroll_data.items[i] = {
@@ -152,18 +176,26 @@ function init_scroller(sprs, y)
   scroll_data.total_width = (#scroll_data.sprs) * step
 end
 
--- update positions and slow down; call from _update()
+-- update positions of items on the scroller and apply drag every game tick
 function update_scroller()
   local s = scroll_data
   if not s then return end
   s.spd = max(0, s.spd - s.drag)
   for i=1,#s.sprs do
+    -- move based on spd
     s.items[i].x += s.spd
+
     -- wrap when fully outside of screen
     if s.items[i].x > 128 + s.spr_w then
       s.items[i].x -= s.total_width
     end
-    -- TODO: set selected
+    
+    -- set if the item is selected or not
+    if abs((29+128)/2 - s.items[i].x) < 9 then 
+      s.items[i].selected = true
+    else
+      s.items[i].selected = false 
+    end
   end
 end
 
@@ -173,33 +205,36 @@ function draw_scroller(id)
   local s = scroll_data
   
   -- draw container 1px behind the sidebar left + 1px offscreen right
-  rectfill(28,s.y-13,128,s.y+12,colors.blue_d)
-  rect(28,s.y-13,128,s.y+12,colors.lavender)
-  line()
+  local y1,y2=s.y-11,s.y+10
+  rectfill(28,y1,128,y2,colors.blue_d)
+  rect(28,y1,128,y2,colors.lavender)
+  local x=(28+128)/2
+  rect(x,y1,x+1,y2+1,colors.white)
 
   -- draw items
   for i=1,#s.sprs do
-    draw_icon_at(s.sprs[i],flr(s.items[i].x),s.y)
+    draw_icon_at(s.sprs[i], flr(s.items[i].x), s.y, s.items[i].selected, true)
   end
 end
 
 
 -- draw a given sprite to the game map
-function draw_icon_at(s,x,y,se)
+function draw_icon_at(s,x,y,se,dd)
   --[[
     args: 
       s:  sprite to draw
       x:  x position
       y:  y position
-      se: selected (optional bool)
+      se: selected? (optional, bool)
+      dd: disable dropshadow (optional, bool)
   ]]
 
   if se then 
-    fancy_container_c(x,y,16,16,3,colors.lavender,colors.white,"fr")
-    point_indicator_at(x,y-8,10,30)
+    fancy_container_c(x,y,16,16,3,colors.lavender,colors.white,"fr",dd)
+    point_indicator_at(x,y-10,10,30)
     spr_outline_c(s,x,y,colors.white)
   else 
-    fancy_container_c(x,y,16,16,3,colors.blue_d,colors.lavender,"fs")
+    fancy_container_c(x,y,16,16,3,colors.blue_d,colors.lavender,"fs",dd)
     spr_c(s,x,y,8,8)
   end
 end
@@ -217,7 +252,7 @@ function point_indicator_at(x,y,o,fpc)
   spr(21, x-4, y-o+wiggle)
 end
 
-function fancy_container(x,y,w,h,r,f,b,ft)
+function fancy_container(x,y,w,h,r,f,b,ft,dd)
   --[[
     Draw a fancy UI container to the screen
 
@@ -230,15 +265,16 @@ function fancy_container(x,y,w,h,r,f,b,ft)
       f:  Fill color
       b:  Border color
       ft: Fill type --  "fr" (default) | "ff" | "fs" -- see set_fill() for details
+      dd: Disable dropshadow
   ]]
   if (ft == nil) ft = "fr"
-  set_fill()                  -- solid fill
-  rrectfill(x, y, w, h, r, f) -- fill solid
-  set_fill(ft)              -- fancy fill (inv.)
-  rrectfill(x, y, w, h, r, f) -- populate rect w fancy fill
-  set_fill()                  -- solid fill
-  rrect(x, y+1, w, h, r, 1)   -- border drop shadow
-  rrect(x, y, w, h, r, b)     -- border
+  set_fill()                                  -- solid fill
+  rrectfill(x, y, w, h, r, f)                 -- fill solid
+  set_fill(ft)                                -- fancy fill (inv.)
+  rrectfill(x, y, w, h, r, f)                 -- populate rect w fancy fill
+  set_fill()                                  -- solid fill
+  if not dd then rrect(x, y+1, w, h, r, 1) end  -- border drop shadow (optional)
+  rrect(x, y, w, h, r, b)                     -- border
 end
 
 -- Set fill type based on passed type (t)
@@ -259,7 +295,7 @@ end
 
 -- draw the current player stats to the sidebar
 function draw_stats()
-  local base_height,spacing,line_gap=41,12,7
+  local base_height,spacing,line_gap=45,12,7
   for i=1,#player.stats_order do
     local k = player.stats_order[i]
     local v = player.stats[k]
@@ -294,8 +330,8 @@ function rrectfill_c(x,y,w,h,r,c)
 end
 
 -- centered variant of normal fancy container
-function fancy_container_c(x,y,w,h,r,f,b,ft)
-  fancy_container(x-(w/2), y-(h/2),w,h,r,f,b,ft)
+function fancy_container_c(x,y,w,h,r,f,b,ft,dd)
+  fancy_container(x-(w/2), y-(h/2),w,h,r,f,b,ft,dd)
 end
 
 -- centered variant of a spr function
@@ -349,7 +385,18 @@ function spr_outline_c(s, x, y, c, th, xs, ys, fh, fv)
   spr_outline(s, x-4, y-4, c, th, xs, ys, fh, fv)
 end
 
-
+-- shuffle a table's items in-place
+function shuffle_inplace(t)
+  --[[
+    args: 
+      t: table to shuffle
+  ]]
+  for i=#t,2,-1 do
+    local j = flr(rnd(i)) + 1
+    t[i], t[j] = t[j], t[i]
+  end
+  return t
+end
 
 
 __gfx__

@@ -226,4 +226,13 @@
  rrr______r____rrrrr_r_______rr________r__r_________r____rrrrr_rr____rr____r__rr_
  _r_________rrrrr__r_________rrrr_____rrrr_________rr_________rr_________r_______
  __ri.....i....ii....iiii...ii....i......iii.........rr_________rr__r_________rr_
+ _rr_rr________rr_r_r_________iiir______r_________i......ii...r_________r_r______
+ ___r__rr____rr__rr_r_________i.........rrri.ir_r_______rrr__r__r_________rr_rr_r
+ r__rr_r_________r_r_rr_rrrr_r__r_______rrr_____rrrrr_r_r__rrrr___r_____r__r_____
+ ____r_r__rrrrrr_______rr___r_rrrr___rrr_rrr_________r___r__r___rrrr__rr_________
+ rr_________r_________r_________rii...ii....i.........i.ii........ii.i.....ii....
+ .....i.........ii.....i.......ii....i.ii..i.........i.........ii...i...i..i.....
+ ...i..i......i.........ii...ii.iii....ii.........r_________rr_rrr_rr_________rrr
+ rr_r_rr_rrrr_r_rrrrr_________r__r_________rr___rrrrr__rrr_rrrrrrr_rr______r____r
+ rr_rr_rr_rrrrr_r_rrrrr_rrr________r_____r____ri.........ii........r__r_rrr_r___r
  
