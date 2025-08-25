@@ -13,8 +13,8 @@ function _init()
 
   player={
     health=5,
-    stats={str=50,agl=50,lck=00},
-    stats_order={"str","agl","lck"},
+    stats={str=50,dex=50,luk=00,csh=00},
+    stats_order={"str","dex","luk","csh"},
     get_hearts=function(self)
       if self.health==0 then return {7,7,7,7} end
       if self.health==1 then return {6,7,7,7} end
@@ -29,7 +29,8 @@ function _init()
   }
   
   -- [m]ap, [s]hop, [e]ncounter
-  gamestate={ "m", "s", "e",}
+  states={m=0,s=1,e=2}
+  gamestate=states.m
 
   frame_ct=0
 end
@@ -44,7 +45,6 @@ end
   |-----|-----|-----|-----|
   |  8  |  4  |  2  |  1  |
   '-----------------------'
-  {0b1010101001010101}
 ]]
 
 -->8
@@ -57,9 +57,9 @@ function _update()
   end
 
   -- slowly increase player hp
-  if frame_ct%20==0 then
-    player.health = (player.health + 1) % 9
-  end
+  -- if frame_ct%20==0 then
+  --   player.health = (player.health + 1) % 9
+  -- end
 end
 
 -->8
@@ -68,21 +68,26 @@ function _draw()
   cls(0)                   -- clear screen black
   set_fill("ff")           -- set fancy upward scrolling fill
   rectfill(0,0,128,128,1)  -- draw fill across entire screen
-  fillp()                  -- reset to solid fill
+  set_fill()               -- reset to solid fill
 	 
   -- sections
   draw_sidebar()
 
-  -- draw_encounter()
+  -- map gamestate
+  if gamestate==states.m then
+    draw_gamemap()
+  -- encounter gamestate
+  elseif gamestate==states.e then
+
+  -- shop encounter 
+  elseif gamestate==states.s then
   
+  else error("gamestate ".." not accounted for") end
 end
 
+-- render the sidebar on the screen
 function draw_sidebar()
-  -- bg render
   map()
-
-  -- char pic
-  -- spr(1,1*spr_size,1.5*spr_size)
 
   -- health ----------------
   fancy_container(1,10,25,26,3,1,7)
@@ -97,84 +102,207 @@ function draw_sidebar()
 
   -- items -----------------
   fancy_container(1,92,25,26,3,1,7)
-  
   spr(8, 4, 96)
   spr(8, 15, 96)
   spr(8, 4, 106)
   spr(8, 15, 106)
-
-
 end
 
-function fancy_container(x,y,w,h,r,f,b)
+function draw_gamemap()
+  map_start,map_end=32,128
+  map_width=map_end-map_start
+  map_center=map_start+(map_width/2)
+
+  draw_icon_at(22, map_center - 16 - 4 , 100, false)
+  draw_icon_at(23, map_center, 100, true)
+  draw_icon_at(25, map_center + 16 + 4 , 100, false)
+end
+
+-- draw a given sprite to the game map
+function draw_icon_at(s,x,y,se)
+  --[[
+    args: 
+      s:  sprite to draw
+      x:  x position
+      y:  y position
+      se: selected (bool)
+  ]]
+
+  if se then 
+    fancy_container_c(x,y,16,16,3,13,7,"fr")
+    point_indicator_at(x,y-8,10,30)
+    spr_outline_c(s,x,y,7)
+  else 
+    fancy_container_c(x,y,16,16,3,1,13,"fs")
+    spr_c(s,x,y,8,8)
+  end
+end
+
+-- draw a moving pointer indicated over a position by a specific offset
+function point_indicator_at(x,y,o,fpc)
+  --[[
+    args:
+      x:   x position
+      y:   y position
+      o:   offset amount
+      fpc: frames per cycle (e.g. 30 -> one full full up/down cycle every 30 frames)
+  ]]
+  local wiggle = flr(sin(frame_ct/fpc)+0.5)
+  spr(21, x-4, y-o+wiggle)
+end
+
+function fancy_container(x,y,w,h,r,f,b,ft)
   --[[
     Draw a fancy UI container to the screen
 
     Args: 
-      x: Starting x position
-      y: Starting y position
-      w: Width of the container
-      h: Height of the container
-      r: Border radius
-      f: Fill color
-      b: Border color
+      x:  Starting x position
+      y:  Starting y position
+      w:  Width of the container
+      h:  Height of the container
+      r:  Border radius
+      f:  Fill color
+      b:  Border color
+      ft: Fill type --  "fr" (default) | "ff" | "fs" -- see set_fill() for details
   ]]
+  if (ft == nil) ft = "fr"
   set_fill()                  -- solid fill
   rrectfill(x, y, w, h, r, f) -- fill solid
-  set_fill("fr")              -- fancy fill (inv.)
+  set_fill(ft)              -- fancy fill (inv.)
   rrectfill(x, y, w, h, r, f) -- populate rect w fancy fill
   set_fill()                  -- solid fill
   rrect(x, y+1, w, h, r, 1)   -- border drop shadow
   rrect(x, y, w, h, r, b)     -- border
 end
 
+-- Set fill type based on passed type (t)
 function set_fill(t)
   --[[
-    Set fill type based on passed type (t)
-
-    Opts:
+    args:
       nil:  solid fill
       "ff": fancy-fill (upward scrolling)
-      "ff": fancy-fill reversed (downward scrolling)
+      "fr": fancy-fill reversed (downward scrolling)
+      "fs": fancy-fill static
   ]]
   if     t==nil  then fillp()
   elseif t=="ff" then fillp(fancyfill[(fancyfill_ct%4)+1])
   elseif t=="fr" then fillp(fancyfill[((fancyfill_ct*-1)%4)+1])
+  elseif t=="fs" then fillp(fancyfill[1])
   else error("Fill type not accounted for") end
 end
 
+-- draw the current player stats to the sidebar
 function draw_stats()
-  local base_height,spacing,line_gap=44,15,7
+  local base_height,spacing,line_gap=41,12,7
   for i=1,#player.stats_order do
     local k = player.stats_order[i]
     local v = player.stats[k]
     local val = v < 10 and "0"..v or v
     local base_y = base_height + (spacing * (i-1))
     print(k..":"..val, 2, base_y+1, 1)                   -- draw text
-    print(k..":"..val, 2, base_y,   7)                   -- draw text drop shadow
+    print(k..":"..val, 2, base_y, 7)                     -- draw text drop shadow
     line(2, base_y+line_gap,   24, base_y+line_gap,   7) -- draw underline
     line(2, base_y+line_gap+1, 24, base_y+line_gap+1, 1) -- draw underline shadow
   end
 end
 
+-- Helper functions for centering
+function rrect_c(x,y,w,h,r,c)
+  --[[
+    draw a rounded rect centered about a point
+    
+    Args:
+      x: target x position
+      y: target y position
+      w: width
+      h: height
+      r: radius
+      c: color
+  ]]
+  rrect(x-(w/2), y-(h/2),w,h,r,c)
+end
+
+-- centered variant of rrectfill
+function rrectfill_c(x,y,w,h,r,c)
+  rrectfill(x-(w/2), y-(h/2),w,h,r,c)
+end
+
+-- centered variant of normal fancy container
+function fancy_container_c(x,y,w,h,r,f,b,ft)
+  fancy_container(x-(w/2), y-(h/2),w,h,r,f,b,ft)
+end
+
+-- centered variant of a spr function
+function spr_c(n,x,y,w,h,fx,fy)
+  --[[
+    Args:
+      n: sprite id to draw
+      x: x position
+      y: y position
+      w: width
+      h: height
+      fx: flip x (bool)
+      fy: flip y (bool)
+  ]]
+  spr(n,x-(w/2),y-(h/2))
+end
+
+-- helper outline fxn lifted from achie72 on github then minified for token: 
+-- https://gist.github.com/Achie72/a249edb0e1c32cdaedf721726f2d8d34
+function spr_outline(s, x, y, c, th, xs, ys, fh, fv)
+  --[[
+    draw a sprite at a position with a given color + thickness
+
+    args:
+      s:  target sprite
+      x:  x position
+      y:  y position
+      c:  color
+      th: outline thickness
+      xs: x_size
+      ys: y_size
+      fh: flip horizontal flag
+      fv: flip vertical flag
+  ]]
+  if (c == nil) c = 7
+  if (th == nil) th = 1 
+  if (xs == nil) xs = 1    
+  if (ys == nil) ys = 1 
+  
+  for i=1,15,1 do pal(i, c) end
+  if c == 0 then palt(0, false) end
+  for i=-th,th do for j=-th,th do spr(s, x-i, y-j, xs, ys, fh, fv) end end
+  if c == 0 then palt(0, true) end
+  pal()
+  spr(s, x, y, xs, ys, fh, fv)
+end
+
+
+-- centered variant of spr_outline function
+function spr_outline_c(s, x, y, c, th, xs, ys, fh, fv)
+  spr_outline(s, x-4, y-4, c, th, xs, ys, fh, fv)
+end
+
+
+
 
 __gfx__
-000000000000000000000000000000000000000000000000000000000000000000000000e000000e566660000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000dd00dd00dd00dd00dd00dd000d55d00ee00008e05dd00000000000000000000000000000000000000000000
-0070070000000000000000000000000000000000de7dde7dde7dd55dd51dd15d0d5115d06eeddee60d6666600000000000000000000000000000000000000000
-00077000000007aa7a999aa77a99aaaaaa900000e887e887e8875115d111111d0511115066666666d66ccc660000000000000000000000000000000000000000
-0007700000007a99999449999449999949aa0000e888888ee8881115d111111d05111150ddd66dddd6c666c60000000000000000000000000000000000000000
-007007000007a9111111111111111111194a9000de8888edde88115d0d1111d00d5115d066666666d66ccc660000000000000000000000000000000000000000
-000000000004941dddddddddddddddddd114a0000de88ed00de815d000d11d0000d55d00d66ee66d5d66666d0000000000000000000000000000000000000000
-000000000009a1ddddddddddddddddddddd1a00000deed0000de5d00000dd000000000000dd22dd005dddd500000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddd90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000004dddd00000000dddddddddddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddd90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000009dddd00000000dddddddddddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000dd00dd00dd00dd00dd00dd000d55d0000000000000000000000000000000000000000000000000000000000
+0070070000000000000000000000000000000000de7dde7dde7dd55dd55dd55d0d5115d000000000000000000000000000000000000000000000000000000000
+00077000000007aa7a999aa77a99aaaaaa900000e887e887e8875115511551150511115000000000000000000000000000000000000000000000000000000000
+0007700000007a99999449999449999949aa0000e888888ee8881115511111150511115000000000000000000000000000000000000000000000000000000000
+007007000007a9111111111111111111194a9000de8888edde88115dd511115d0d5115d000000000000000000000000000000000000000000000000000000000
+000000000004941dddddddddddddddddd114a0000de88ed00de815d00d5115d000d55d0000000000000000000000000000000000000000000000000000000000
+000000000009a1ddddddddddddddddddddd1a00000deed0000de5d0000d55d000000000000000000000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddda00000aaaa00e000000e29999000566660000d6666d0000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddd90000a9009a0e800008e2224000005dd0000d66dd66d000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddda000090000a0666dd666049999900d666660d6d00d66000000000000000000000000000000000000000000000000
+000000000004dddd00000000dddddddddddda000090000a066666666499aaa99d66ccc660000d66d000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddda00009a00a90d116611d49a999a9d6c666c6000d66d0000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddd9000009aa90066666666499aaa99d66ccc6600d66d00000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddda000009aa900d66ee66d249999945d66666d00000000000000000000000000000000000000000000000000000000
+000000000009dddd00000000dddddddddddda000000990000dd22dd00244442005dddd5000d66d00000000000000000000000000000000000000000000000000
 000000000009dddd0000000000000000dddda0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000000000009dddd0000000000000000dddd90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000000000009dddd0000000000000000dddd40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000

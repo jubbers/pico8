@@ -185,4 +185,25 @@
  ....gggggggg.gggggggggggggggggggggggggggggggggggggggggggggggggggggggg.........gg
  ggggggg........ggggggggggggggggggggggggggggggggggggggggggggggg..ggg.......g..ggg
  gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+ gggg.gii.ri.........rri.........i.........ii.........i........i..i.......ii.....
+ ....iii.......ii.....ii.iir______riigggggggggggggggggggr______r_r_r__r______rrrr
+ __r____r________r___rrr_r_r__r___rr__rr__rri.iirrii.........i.iii.........ir_r__
+ _______rrrrggmmmmi.........ri.ii.........irr_________r_rr_________r___ii........
+ i......rrr_rr_________mcccccc....ccccc.........i.........iiii......i.irr________
+ _rrr_rr_________r_iiii...ir_rrrrr_r_____r______r___r_________rrr_______rr__r_rrr
+ _________rgggggggg.gggggggggggggggggg.gmmmmmmm..mmm.........mm....rr___rrrrrrr_r
+ rrmmimm.........mmmggggggggg.gg.ggggggggggggggggggggggggggggggggggggg.ggg.......
+ .rgiirr__rrrr____rrrrrr_r__rrrrrrrrr_________rrrr___rrr_________r_____r_________
+ r_rrr_r__rr_________r_________r_r_ggggr___i.........igig....grrr_________rr_rrrr
+ rr_rrrrr___rrrrrrrr_rr_rrrrrrrr_r_r______r_________iiir_________rr_________r_r__
+ _______rrr_________rr_________r_______rr_rr_r___rrr____r_________r_________rr___
+ __rrrgg.rr_iggggii.........rr__r_________gg.gr__gggggggggggggggggggggggggggggggg
+ ggggggggggggggggggggggggggggg.........g..g.........iii..r_____rrrrrigggrrggggrrr
+ _r_i.........rr___rr_________rr_________rr________r_________r__r_____r_________r
+ r_________ii..i.i.r__r_________rr_________rr_________ii.iiii..irr____r_________g
+ gi..ggg..rrr_rr_________rrr_rrr_rr_rr_________r_________r_________r___r_________
+ rr__rr____igggirgggggggggggirr____r_____rii........i.....ir_______rrr________rrr
+ _________rr_____r_________rrrr_________r___r_r_________rr_rr_________rrrr_____rr
+ rr____rrr__rrrrr_________rr_rrrr__ggggggggggg.gggggggggggggggggggggggggggggggggg
+ gggggggigggggggggggggggggggg.gggggggg..g.grr__rr_r_rrrrrrr____rr_________r_rr_rr
  
