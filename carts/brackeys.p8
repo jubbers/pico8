@@ -129,11 +129,9 @@ function draw_encounter()
   -- draw_icon_at(25,map_center+16+4,100,false,true)
   -- rrectfill_c(map_center-1, 128-47, map_width-4, 11*8, 7, colors.lavender)
   rrectfill_c(map_center-1, 128/2, map_width-4, 128-6, 7, colors.lavender)
-  rrectfill_c(map_center-1, 128/2, map_width-4, 128-6, 7, colors.lavender)
+  rrect_c(map_center-1, 128/2, map_width-4, 128-6, 7, colors.white)
   
   draw_scroller()
-
-
 end
 
 -- Initialize the random choice scroller required fields
@@ -207,19 +205,26 @@ end
 
 -- draw sprites at their positions; call from _draw()
 function draw_scroller(id)
-  -- retrieve scroll info
-  local s = scroll_data
+  -- todo: refactor away some of these unused tokens
+  -- draw the main container box w a 1px dropshadow
+  local banner_top, banner_bottom, banner_left = scroll_data.y-11, scroll_data.y+10, 28
+  local banner_center_h, banner_center_v = (banner_left+128)/2 , (banner_bottom+banner_top)/2 + 1
+  rrectfill_c(banner_center_h, banner_center_v, 2+128-banner_left, 23, 0, colors.blue_d)
+  rrect_c(banner_center_h, banner_center_v, 2+128-banner_left, 22, 0, colors.white)
   
-  -- draw container 1px behind the sidebar left + 1px offscreen right
-  local y1,y2=s.y-11,s.y+10
-  rectfill(28,y1,128,y2,colors.blue_d)
-  rect(28,y1,128,y2,colors.lavender)
-  local x=(28+128)/2
-  rect(x,y1,x+1,y2+1,colors.white)
+  -- draw the line marking the center of the
+  rrectfill_c(banner_center_h, banner_center_v+1, 4, 28, 0, colors.blue_d)
+  rrectfill_c(banner_center_h, banner_center_v+1, 2, 26, 0, colors.white)
 
   -- draw items
-  for i=1,#s.sprs do
-    draw_icon_at(s.sprs[i], flr(s.items[i].x), s.y, s.items[i].selected, true)
+  for i=1,#scroll_data.sprs do
+    draw_icon_at(
+      scroll_data.sprs[i], 
+      flr(scroll_data.items[i].x), 
+      scroll_data.y, 
+      scroll_data.items[i].selected, 
+      true
+    )
   end
 end
 
@@ -315,11 +320,25 @@ function draw_stats()
 end
 
 -- Helper functions for centering
+function rect_c(x,y,w,h,c)
+  --[[
+    draw a rect centered about a point
+
+    args:
+      x: target x position
+      y: target y position
+      w: width
+      h: height
+      c: color
+  ]]
+  rect(x-(w/2), y-(h/2),w,h,c)
+end
+
 function rrect_c(x,y,w,h,r,c)
   --[[
     draw a rounded rect centered about a point
     
-    Args:
+    args:
       x: target x position
       y: target y position
       w: width

@@ -248,4 +248,12 @@
  rr__rr_rrr______r______rr_________riii.......rr_rr_rr_rrrr_rr_rrrrr_rr_r__r_rr_r
  rrrrr_rrrr__i.........i...rr_rrr_r__rrrr________r_rr_r_r____r_i....iii...i....ir
  __rrri.rr__r___rrr_r_ii.....ii.........ii.i.........ii.i.........ii...rrr_______
+ __rr____r__r_r_rr__i.........i.....i.........i....r_i..irrrr____r_________r_____
+ ____rr________r_________i.r_r_r_r_____r_______rr_rr_r_r_r_________rrr____rr_____
+ ____rr____rr____r_____r___r______rr____rrr_________rr_____r__r___r______rr__r___
+ ___r_rrr___r_rr_____rr_____r_________r_________ii.........r___r_________rrr____r
+ r___r__rrr__r_________ri...rr_rr______r______rrrrrr_________r_________ri.ii..irr
+ r_________i.........ii..ii.........i.........i.........ii.iii.........r______rr_
+ __rr_rr_rrr_rr_rr__r_r_rrr____r_r__rr_rr_r__rr_r_________r_________rrrr____rr__r
+ rr__r_r_r_________r_rr__rrr__rrr__rrr_rrr_________ii..r_r_r_rrrr_r_r____r_r_____
  
